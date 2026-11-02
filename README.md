@@ -58,7 +58,7 @@ The version comes from the `VERSION` file.
 
 The app icon is drawn by `scripts/make-icon.swift`. After changing the drawing, run `swift scripts/make-icon.swift` to regenerate `Resources/Assets.xcassets`.
 
-Ad-hoc signed builds get a new code signature every time you build, and macOS ties the Accessibility grant to it. After rebuilding, remove Alert from the Accessibility list with the − button and add it again (or run `tccutil reset Accessibility io.github.hananiah-linde.alert`). Developer ID–signed release builds don't have this problem.
+macOS ties the Accessibility grant to the app's code signature. `make build` signs with your Developer ID Application certificate when the keychain has one, so the grant survives rebuilds. Ad-hoc builds (no certificate, or running `scripts/build-app.sh` directly) get a new signature every time. After rebuilding one of those, remove Alert from the Accessibility list with the − button and add it again, or run `tccutil reset Accessibility io.github.hananiah-linde.alert`.
 
 ## Releasing
 
