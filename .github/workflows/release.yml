@@ -1,0 +1,33 @@
+name: Release
+
+# Releases normally run locally with `make release`. This is a manual CI fallback:
+# Actions > Release > Run workflow, choosing the vX.Y.Z tag under "Use workflow from".
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    uses: hananiah-linde/homebrew-tap/.github/workflows/release-macos-app.yml@main
+    permissions:
+      contents: write
+    with:
+      app-name: Alert
+    secrets:
+      DEVELOPER_ID_P12_BASE64: ${{ secrets.DEVELOPER_ID_P12_BASE64 }}
+      DEVELOPER_ID_P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+      NOTARY_API_KEY: ${{ secrets.NOTARY_API_KEY }}
+      NOTARY_API_KEY_ID: ${{ secrets.NOTARY_API_KEY_ID }}
+      NOTARY_API_ISSUER_ID: ${{ secrets.NOTARY_API_ISSUER_ID }}
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+
+  cask:
+    needs: release
+    uses: hananiah-linde/homebrew-tap/.github/workflows/bump-cask.yml@main
+    with:
+      cask: alert
+      version: ${{ needs.release.outputs.version }}
+      sha256: ${{ needs.release.outputs.sha256 }}
+    secrets:
+      TAP_GITHUB_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}

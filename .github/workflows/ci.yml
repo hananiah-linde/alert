@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Show toolchain
+        run: swift --version
+
+      - name: Build app bundle (universal, ad-hoc signed)
+        run: UNIVERSAL=1 ./scripts/build-app.sh
+
+      - name: Upload app
+        uses: actions/upload-artifact@v7
+        with:
+          name: Alert.app
+          path: dist/Alert.app
+          retention-days: 7
