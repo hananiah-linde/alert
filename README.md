@@ -32,7 +32,17 @@ Alert doesn't read notification content, and it makes no network connections.
 
 ## Install
 
-Download `Alert-<version>.zip` from [Releases](https://github.com/hananiah-linde/alert/releases), unzip, and move `Alert.app` to `/Applications`.
+Homebrew:
+
+```sh
+brew tap hananiah-linde/tap
+brew trust --cask hananiah-linde/tap/alert
+brew install --cask hananiah-linde/tap/alert
+```
+
+Homebrew only loads casks from third-party taps you've trusted, which is what `brew trust` does.
+
+Or download `Alert-<version>.zip` from [Releases](https://github.com/hananiah-linde/alert/releases), unzip, and move `Alert.app` to `/Applications`.
 
 ## Build from source
 
